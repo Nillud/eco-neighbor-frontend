@@ -28,7 +28,7 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginSchema) => {
     try {
       await login(data)
-      router.push(PAGES.USER.PROFILE)
+      router.push(PAGES.PUBLIC.HOME)
     } catch (e) {
       console.error('Ошибка при входе:', e)
     }

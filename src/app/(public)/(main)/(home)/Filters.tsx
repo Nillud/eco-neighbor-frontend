@@ -1,5 +1,4 @@
 import { Heading } from '@/components/shared/heading/Heading'
-import { Badge } from '@/components/ui/badge'
 import { Toggle } from '@/components/ui/toggle'
 import { useWaste } from '@/hooks/useWaste'
 import { IMapPoint } from '@/services/map/map.types'

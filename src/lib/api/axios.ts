@@ -1,7 +1,7 @@
+import { API_URL } from '@/config/api.config'
 import axios from 'axios'
 
 import { IS_CLIENT } from '@/constants/app.constants'
-import { API_URL } from '@/config/api.config'
 
 export const $api = axios.create({
   baseURL: API_URL,
@@ -39,8 +39,21 @@ $api.interceptors.response.use(
       } catch (refreshError) {
         isRefreshing = false
 
-        // Если даже рефреш не помог — перенаправляем на вход
-        if (IS_CLIENT) window.location.href = '/auth/login'
+        if (originalRequest.url?.includes('/users/profile')) {
+          return Promise.reject(refreshError)
+        }
+
+        // 2. Если мы и так на странице логина/регистрации — НЕ РЕДИРЕКТИМ (избегаем цикла).
+        if (IS_CLIENT && window.location.pathname.startsWith('/auth')) {
+          return Promise.reject(refreshError)
+        }
+
+        // 3. Во всех остальных случаях (когда юзер хотел сделать что-то приватное,
+        // например, сдать мусор, но токен сдох) — отправляем на логин.
+        if (IS_CLIENT) {
+          window.location.href = '/auth/login'
+        }
+
         return Promise.reject(refreshError)
       }
     }

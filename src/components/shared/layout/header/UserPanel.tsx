@@ -4,7 +4,6 @@ import { PAGES } from '@/config/pages.config'
 import { IUser } from '@/services/auth/auth.types'
 import { useUser } from '@/store/user.store'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 interface Props {
   user: IUser | null
@@ -20,9 +19,9 @@ export function UserPanel({ user }: Props) {
   if (!user) {
     return (
       <Button
-        variant="default"
-        size="sm"
+        size="lg"
         asChild
+        className='px-4'
       >
         <Link href={PAGES.PUBLIC.LOGIN}>Войти</Link>
       </Button>

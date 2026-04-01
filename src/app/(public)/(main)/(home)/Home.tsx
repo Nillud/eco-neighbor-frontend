@@ -4,14 +4,20 @@
 import { CollectWasteModal } from '@/components/shared/collect-waste/CollectWasteModal'
 import { Heading } from '@/components/shared/heading/Heading'
 import { YandexMap } from '@/components/shared/map/Map'
+import { PAGES } from '@/config/pages.config'
 import { usePoints } from '@/hooks/usePoints'
 import { userService } from '@/services/user/user.service'
+import { useUser } from '@/store/user.store'
+import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
 import { Filters } from './Filters'
 
 export function Home() {
+  const { isAuth, checkAuth } = useUser()
+  const router = useRouter()
+
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const { data: points, isLoading } = usePoints(selectedFilters)
 
@@ -26,6 +32,8 @@ export function Home() {
 
   useEffect(() => {
     const handleOpenModal = (e: any) => {
+      if (!isAuth) router.push(PAGES.PUBLIC.LOGIN)
+
       setSelectedPointId(e.detail.pointId)
       setIsCollectModalOpen(true)
     }
@@ -39,13 +47,17 @@ export function Home() {
     [points, selectedPointId]
   )
 
-  const handleFinalSuccess = async (totalPoints: number, values: Record<string, number>) => {
+  const handleFinalSuccess = async (
+    totalPoints: number,
+    values: Record<string, number>
+  ) => {
     try {
       await userService.collectWaste(totalPoints, values)
-      
+
       toast.success(`Поздравляем!`, {
         description: `Начислено ${totalPoints} эко-очков за ваш вклад.`
       })
+      checkAuth()
     } catch {
       toast.error('Не удалось сохранить результат')
     }
