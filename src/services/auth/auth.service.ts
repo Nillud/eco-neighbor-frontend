@@ -1,23 +1,20 @@
 import { PAGES } from '@/config/pages.config'
 import { $api } from '@/lib/api/axios'
 
-import { IAuthResponse, ILoginDto, IRegisterDto } from './auth.types'
+import { ILoginDto, IRegisterDto, IUser } from './auth.types'
 
 class AuthService {
   private AUTH = '/auth'
 
   async login(data: ILoginDto) {
     // Бэкенд установит accessToken и refreshToken в HttpOnly куки
-    const response = await $api.post<IAuthResponse>(`${this.AUTH}/login`, data)
-    return response.data.user
+    const response = await $api.post<IUser>(`${this.AUTH}/login`, data)
+    return response.data
   }
 
   async register(data: IRegisterDto) {
-    const response = await $api.post<IAuthResponse>(
-      `${this.AUTH}/register`,
-      data
-    )
-    return response.data.user
+    const response = await $api.post<IUser>(`${this.AUTH}/register`, data)
+    return response.data
   }
 
   async logout() {
@@ -33,8 +30,8 @@ class AuthService {
 
   // Метод для получения нового accessToken (вызывается в interceptors)
   async getNewTokens() {
-    const response = await $api.post<IAuthResponse>(`${this.AUTH}/new-tokens`)
-    return response.data.user
+    const response = await $api.post<IUser>(`${this.AUTH}/new-tokens`)
+    return response.data
   }
 }
 

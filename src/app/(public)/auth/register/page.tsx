@@ -26,7 +26,7 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterSchema) => {
     try {
       await registerUser(data)
-      router.push(PAGES.USER.PROFILE)
+      router.push(PAGES.PUBLIC.HOME)
     } catch (e) {
       console.error(e)
     }

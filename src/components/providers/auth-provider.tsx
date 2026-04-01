@@ -7,11 +7,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const checkAuth = useUser(state => state.checkAuth)
 
   useEffect(() => {
-    const isMaybeAuth = localStorage
-      .getItem('user-storage')
-      ?.includes('"isAuth":true')
-      
-    if (isMaybeAuth) checkAuth()
+    checkAuth()
   }, [checkAuth])
 
   return <>{children}</>
