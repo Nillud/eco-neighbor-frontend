@@ -57,12 +57,12 @@ export function CollectWasteModal({
       open={isOpen}
       onOpenChange={onClose}
     >
-      <DialogContent className="sm:max-w-106.25">
+      <DialogContent className="flex max-h-[90vh] w-[95vw] flex-col overflow-hidden rounded-2xl p-4 sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Что вы сдали в «{point.title}»?</DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col gap-4 py-4">
+        <div className="flex flex-col gap-4">
           <p className="text-sm text-slate-500">
             Выберите категории и укажите количество (кг или шт):
           </p>
@@ -88,18 +88,20 @@ export function CollectWasteModal({
                   </Toggle>
 
                   {isSelected && (
-                    <Input
-                      type="number"
-                      placeholder="Введите количество..."
-                      min="1"
-                      className="ml-4 w-[calc(100%-1rem)]"
-                      onChange={e =>
-                        setValues(prev => ({
-                          ...prev,
-                          [waste.slug]: Number(e.target.value)
-                        }))
-                      }
-                    />
+                    <div className="w-full pl-4">
+                      <Input
+                        type="number"
+                        placeholder="Введите количество..."
+                        min="1"
+                        className="w-full"
+                        onChange={e =>
+                          setValues(prev => ({
+                            ...prev,
+                            [waste.slug]: Number(e.target.value)
+                          }))
+                        }
+                      />
+                    </div>
                   )}
                 </div>
               )
@@ -108,9 +110,12 @@ export function CollectWasteModal({
         </div>
 
         <Button
-          className="w-full bg-green-600 hover:bg-green-700"
+          className="w-full font-medium text-sm lg:text-base bg-green-600 hover:bg-green-700"
           onClick={handleSubmit}
-          disabled={Object.keys(values).length === 0 || Object.values(values).some(el => el === 0)}
+          disabled={
+            Object.keys(values).length === 0 ||
+            Object.values(values).some(el => el === 0)
+          }
         >
           Подтвердить и получить баллы
         </Button>

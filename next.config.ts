@@ -8,7 +8,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'avatars.yandex.net'
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'github.com'
+      },
     ]
   }
 }

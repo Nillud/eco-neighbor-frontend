@@ -64,7 +64,7 @@ export function Home() {
   }
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col gap-4 md:gap-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <Heading
           title="Эко-карта"
@@ -76,26 +76,28 @@ export function Home() {
         </button>
       </div>
 
-      <div className="grid h-150 grid-cols-1 gap-6 md:h-175 lg:grid-cols-4">
-        <Filters
-          selectedFilters={selectedFilters}
-          toggleFilter={toggleFilter}
-          points={points}
-        />
+      <div className="flex flex-col gap-4 lg:grid lg:h-175 lg:grid-cols-4">
+        <div className="lg:col-span-1">
+          <Filters
+            selectedFilters={selectedFilters}
+            toggleFilter={toggleFilter}
+            points={points}
+          />
+        </div>
 
-        <div className="relative lg:col-span-3">
+        <div className="relative h-100 md:h-125 lg:col-span-3 lg:h-full">
           {isLoading && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50">
-              <span>Загрузка меток...</span>
+            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-white/50 backdrop-blur-sm">
+              <span className="animate-pulse">Загрузка меток...</span>
             </div>
           )}
           <YandexMap
             points={points}
-            className="h-full w-full rounded-xl"
+            className="h-full w-full"
           />
         </div>
       </div>
-
+      
       <CollectWasteModal
         isOpen={isCollectModalOpen}
         onClose={() => setIsCollectModalOpen(false)}

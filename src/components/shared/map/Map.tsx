@@ -66,7 +66,11 @@ export function YandexMap({
                 key={point.id}
                 geometry={[point.latitude, point.longitude]}
                 properties={{
-                  hintContent: point.title + (point.type === 'CONTAINER' ? '(Контейнер)' : '(Пункт приема)'),
+                  hintContent:
+                    point.title +
+                    (point.type === 'CONTAINER'
+                      ? '(Контейнер)'
+                      : '(Пункт приема)'),
                   balloonContentHeader: `<div style="font-weight: bold; font-size: 16px;">${point.title}</div>`,
                   balloonContentBody: `
                   <div style="font-family: sans-serif; padding: 5px 0;">
