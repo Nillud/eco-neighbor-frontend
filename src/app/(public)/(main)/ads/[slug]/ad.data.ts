@@ -1,16 +1,16 @@
-import { AdType } from "@/services/ad/ad.types";
+import { AdType } from '@/services/ad/ad.types'
 
-export const adTypeLabels = {
+export const adTypeLabels: Record<AdType, { label: string; color: string }> = {
   [AdType.GIVEAWAY]: {
     label: 'Отдам даром',
-    color: 'bg-green-100 text-green-700'
+    color: 'bg-emerald-100 text-emerald-700 border border-emerald-200'
   },
   [AdType.RECYCLE]: {
     label: 'Вторсырьё',
-    color: 'bg-blue-100 text-blue-700'
+    color: 'bg-blue-100 text-blue-700 border border-blue-200'
   },
   [AdType.NEED_HELP]: {
     label: 'Нужна помощь',
-    color: 'bg-orange-100 text-orange-700'
+    color: 'bg-amber-100 text-amber-700 border border-amber-200'
   }
 }

@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 
+import EventsPage from './Events'
+
 export const metadata: Metadata = {
-    title: 'Мероприятия'
+  title: 'Мероприятия'
 }
 
 export default function Page() {
-    return <div></div>
+  return <EventsPage />
 }

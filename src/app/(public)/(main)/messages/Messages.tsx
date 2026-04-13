@@ -18,7 +18,7 @@ export default function MessagesPage() {
   })
 
   return (
-    <div className="container mx-auto h-[calc(100vh-120px)] py-4 px-4">
+    <section className="container mx-auto h-[calc(100vh-120px)] py-4 px-4">
       <div className="flex h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         
         {/* Левая часть: Список чатов */}
@@ -37,7 +37,7 @@ export default function MessagesPage() {
         </aside>
 
         {/* Правая часть: Окно чата */}
-        <main className={`flex-1 flex flex-col ${!selectedChat ? 'hidden md:flex' : 'flex'}`}>
+        <div className={`flex-1 flex flex-col ${!selectedChat ? 'hidden md:flex' : 'flex'}`}>
           {selectedChat ? (
             <ChatWindow 
               chat={selectedChat} 
@@ -51,9 +51,9 @@ export default function MessagesPage() {
               <p className="text-lg">Выберите чат, чтобы начать общение</p>
             </div>
           )}
-        </main>
+        </div>
 
       </div>
-    </div>
+    </section>
   )
 }

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
+import { ActionButton } from '@/components/custom-ui/ActionButton'
 import { CollectWasteModal } from '@/components/shared/collect-waste/CollectWasteModal'
 import { Heading } from '@/components/shared/heading/Heading'
 import { YandexMap } from '@/components/shared/map/Map'
@@ -70,10 +71,7 @@ export function Home() {
           title="Эко-карта"
           description="Находите точки сбора вторсырья и актуальные проблемы соседей"
         />
-
-        <button className="bg-primary-brand hover:bg-primary-brand-hover rounded-full px-6 py-3 font-semibold text-white shadow-lg transition-all active:scale-95">
-          + Сообщить о проблеме
-        </button>
+        <ActionButton>+ Добавить точку</ActionButton>
       </div>
 
       <div className="flex flex-col gap-4 lg:grid lg:h-175 lg:grid-cols-4">
@@ -97,7 +95,7 @@ export function Home() {
           />
         </div>
       </div>
-      
+
       <CollectWasteModal
         isOpen={isCollectModalOpen}
         onClose={() => setIsCollectModalOpen(false)}

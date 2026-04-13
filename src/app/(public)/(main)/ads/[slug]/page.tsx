@@ -1,11 +1,11 @@
 import { adService } from '@/services/ad/ad.service'
 import { TPageSlugProp } from '@/types/page.types'
+import { ChevronLeft } from 'lucide-react'
 import { Metadata } from 'next'
-import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { AdContact } from './AdContact'
-import { adTypeLabels } from './ad.data'
+import { AdBody } from './AdBody'
 
 export async function generateMetadata({
   params
@@ -41,86 +41,18 @@ export default async function AdPage({ params }: TPageSlugProp) {
     notFound()
   }
 
-  const { label, color } = adTypeLabels[ad.type]
-
   return (
-    <main className="mx-auto max-w-5xl p-4 md:py-10">
-      <div className="grid gap-10 md:grid-cols-2">
-        <div className="relative aspect-square overflow-hidden rounded-3xl border bg-slate-100">
-          {ad.imageUrl ? (
-            <Image
-              src={ad.imageUrl}
-              alt={ad.title}
-              fill
-              className="object-cover"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-slate-400">
-              Нет фото
-            </div>
-          )}
-          <div className="absolute top-4 left-4">
-            <div
-              className={`mb-3 inline-block rounded-full px-3 py-1 text-xs font-bold ${color}`}
-            >
-              {label}
-            </div>
-          </div>
-        </div>
+    <section className="mx-auto max-w-6xl p-4 md:py-10">
+      {/* Кнопка назад */}
+      <Link
+        href="/ads"
+        className="hover:text-primary-brand mb-6 inline-flex items-center gap-2 text-sm text-slate-500 transition-colors"
+      >
+        <ChevronLeft size={16} />
+        Назад к объявлениям
+      </Link>
 
-        <div className="flex flex-col">
-          <h2 className="text-3xl leading-tight font-extrabold text-slate-900">
-            {ad.title}
-          </h2>
-
-          <div className="mt-4 flex items-center gap-3 text-sm text-slate-500">
-            <span>
-              Опубликовано: {new Date(ad.createdAt).toLocaleDateString()}
-            </span>
-            <span>•</span>
-            <span
-              className={
-                ad.status === 'ACTIVE' ? 'text-emerald-500' : 'text-red-500'
-              }
-            >
-              {ad.status === 'ACTIVE' ? 'Активно' : 'Закрыто'}
-            </span>
-          </div>
-
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold text-slate-800">Описание</h2>
-            <p className="mt-2 leading-relaxed whitespace-pre-line text-slate-600">
-              {ad.description}
-            </p>
-          </div>
-
-          <div className="mt-auto pt-10">
-            {/* Карточка автора */}
-            <div className="mb-6 flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
-              <Image
-                src={ad.author.avatarUrl || '/default-avatar.png'}
-                alt={ad.author.name}
-                width={48}
-                height={48}
-                className="rounded-full"
-              />
-              <div>
-                <p className="font-bold text-slate-900">{ad.author.name}</p>
-                <p className="text-sm text-slate-500">
-                  Рейтинг: {ad.author.rating}
-                </p>
-              </div>
-            </div>
-
-            {/* Твой компонент отправки сообщения */}
-            <AdContact
-              adId={ad.id}
-              authorId={ad.author.id}
-              authorName={ad.author.name}
-            />
-          </div>
-        </div>
-      </div>
-    </main>
+      <AdBody ad={ad} />
+    </section>
   )
 }

@@ -15,7 +15,7 @@ export function ChatList({ chats, selectedId, onSelect, isLoading }: any) {
           onClick={() => onSelect(chat)}
           className={`flex w-full items-start gap-4 p-4 transition-colors hover:bg-slate-50 ${
             selectedId === chat.id
-              ? 'border-primary-brand border-r-4 bg-emerald-50/50'
+              ? 'border-primary-brand border-0 border-r-4 bg-emerald-50/50'
               : ''
           }`}
         >

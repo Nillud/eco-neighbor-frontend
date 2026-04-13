@@ -93,13 +93,15 @@ export function ChatWindow({
         >
           <ChevronLeft />
         </Button>
+
         <Image
-          src={chat.partner.avatarUrl || '/default-avatar.png'}
+          src={chat.partner.avatarUrl || '/images/default-avatar.png'}
           className="h-10 w-10 rounded-full object-cover"
           width={40}
           height={40}
           alt=""
         />
+
         <div className="overflow-hidden">
           <h3 className="truncate font-bold">{chat.partner.name}</h3>
           <p className="text-primary-brand truncate text-xs">{chat.title}</p>

@@ -50,7 +50,8 @@ export function AdContact({ adId, authorId, authorName }: AdContactProps) {
           className="bg-primary-brand w-full gap-2 hover:bg-emerald-600"
         >
           <MessageCircle size={20} />
-          Написать {authorName}
+          Написать 
+          <span className='hidden lg:block'>{authorName}</span>
         </Button>
       ) : (
         <form
