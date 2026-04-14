@@ -3,6 +3,11 @@ import { TPageSlugProp } from '@/types/page.types'
 import { notFound } from 'next/navigation'
 
 import { AdForm } from '../../AdForm'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Редактирование объявления | Эко-Сосед'
+}
 
 export default async function EditAdPage({ params }: TPageSlugProp) {
   const { slug } = await params

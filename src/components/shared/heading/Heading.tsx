@@ -1,7 +1,9 @@
+import { ReactNode } from 'react'
+
 interface Props {
-  title: string
+  title: string | ReactNode
   headingLevel?: 1 | 2 | 3 | 4 | 5
-  description?: string
+  description?: string | ReactNode
 }
 
 export function Heading({ title, description, headingLevel = 2 }: Props) {
@@ -21,14 +23,14 @@ export function Heading({ title, description, headingLevel = 2 }: Props) {
         )
       case 5:
         return (
-          <h5 className="text-base font-bold text-slate-900 md:text-md">
+          <h5 className="md:text-md text-base font-bold text-slate-900">
             {title}
           </h5>
         )
 
       default:
         return (
-          <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">
+          <h2 className="text-2xl font-bold text-slate-900 lg:text-2xl xl:text-3xl">
             {title}
           </h2>
         )

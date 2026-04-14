@@ -24,7 +24,7 @@ export default function EventsPage() {
   return (
     <section className="container py-8">
       {/* Хедер */}
-      <div className="mb-8 flex items-end justify-between">
+      <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between">
         <Heading
           title="Мероприятия"
           description="Развиваем сообщество и заботимся об экологии вместе."
@@ -32,7 +32,7 @@ export default function EventsPage() {
         />
 
         <Link href="/events/create">
-          <ActionButton className='flex items-center gap-1'>
+          <ActionButton className='flex items-center gap-1 mt-2 md:mt-0'>
             <Plus size={18} /> Создать
           </ActionButton>
         </Link>
@@ -42,9 +42,9 @@ export default function EventsPage() {
         {/* Сайдбар с фильтрами */}
         <aside className="w-full space-y-6 md:w-64">
           <div>
-            <h3 className="mb-4 flex items-center gap-2 font-semibold">
+            <span className="mb-4 flex items-center gap-2 font-semibold">
               Категории
-            </h3>
+            </span>
             <div className="flex flex-col gap-2">
               <Button
                 variant={!category ? 'secondary' : 'ghost'}
@@ -83,7 +83,7 @@ export default function EventsPage() {
               <Loader2 className="text-primary-brand h-8 w-8 animate-spin" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
               {events?.map(event => (
                 <EventCard
                   key={event.id}

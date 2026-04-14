@@ -25,6 +25,7 @@ import { useParams } from 'next/navigation'
 import { toast } from 'sonner'
 
 import { eventCategoryLabels } from '../event.utils'
+import { EventActions } from './EventActions'
 import { EventMap } from './EventMap'
 
 interface Props {
@@ -66,6 +67,8 @@ export default function EventSinglePage({ initialEvent }: Props) {
       ? event.imageUrl
       : `${SERVER_URL}${event.imageUrl}`
     : null
+
+  const isCreator = user?.id === event.creatorId
 
   return (
     <div className="container py-10">
@@ -117,6 +120,13 @@ export default function EventSinglePage({ initialEvent }: Props) {
         </div>
 
         <div className="space-y-6">
+          {isCreator && (
+            <EventActions
+              event={event}
+              slug={slug}
+            />
+          )}
+
           <div className="bg-card space-y-6 rounded-2xl border p-6 shadow-sm">
             <h3 className="text-xl font-bold">Детали встречи</h3>
 

@@ -67,6 +67,7 @@ export function Home() {
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <h1 className='hidden'>Эко-сосед</h1>
         <Heading
           title="Эко-карта"
           description="Находите точки сбора вторсырья и актуальные проблемы соседей"

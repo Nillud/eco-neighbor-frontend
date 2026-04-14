@@ -24,7 +24,6 @@ export const useSocket = () => {
 
       socketRef.current.on('connect', () => {
         setIsConnected(true)
-        console.log('📡 Connected to notifications namespace')
       })
 
       socketRef.current.on('disconnect', () => {
