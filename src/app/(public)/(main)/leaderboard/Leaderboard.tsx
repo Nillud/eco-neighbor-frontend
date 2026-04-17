@@ -28,13 +28,14 @@ export default function LeaderboardPage() {
     )
 
   return (
-    <section className="container max-w-3xl mx-auto py-10">
+    // Добавлен горизонтальный padding px-4 для мобильных
+    <section className="container mx-auto max-w-3xl px-4 py-6 md:py-10">
       <Heading
         title="Рейтинг активистов"
         description="Наши герои экологии. Присоединяйтесь к нам, чтобы попасть в список!"
       />
 
-      <div className="mt-12 space-y-4">
+      <div className="mt-8 space-y-3 md:mt-12 md:space-y-4">
         {data?.topUsers.map((u: any) => (
           <UserRow
             key={u.id}
@@ -43,12 +44,11 @@ export default function LeaderboardPage() {
           />
         ))}
 
-        {/* Если пользователь авторизован и не в топе */}
         {data?.currentUser && (
           <>
-            <div className="flex flex-col items-center gap-1 py-4 opacity-40">
-              <div className="h-1.5 w-1.5 rounded-full bg-slate-400" />
-              <div className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+            <div className="flex flex-col items-center gap-1 py-2 opacity-40 md:py-4">
+              <div className="h-1 w-1 rounded-full bg-slate-400 md:h-1.5 md:w-1.5" />
+              <div className="h-1 w-1 rounded-full bg-slate-400 md:h-1.5 md:w-1.5" />
             </div>
             <UserRow
               person={data.currentUser}
@@ -57,16 +57,18 @@ export default function LeaderboardPage() {
           </>
         )}
 
-        {/* Если пользователь НЕ авторизован — показываем мотивационный блок */}
         {!me && (
           <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
-            <p className="mb-4 text-slate-600">
+            <p className="mb-4 text-sm text-slate-600 md:text-base">
               Хотите увидеть своё место в рейтинге и начать зарабатывать очки?
             </p>
-            <Link href={PAGES.PUBLIC.AUTH}>
+            <Link
+              href={PAGES.PUBLIC.AUTH}
+              className="inline-block w-full md:w-auto"
+            >
               <Button
                 variant="outline"
-                className="border-primary-brand text-primary-brand hover:bg-primary-brand/5"
+                className="border-primary-brand text-primary-brand hover:bg-primary-brand/5 w-full md:w-auto"
               >
                 Войти в систему
               </Button>

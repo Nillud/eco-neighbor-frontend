@@ -27,13 +27,14 @@ import { toast } from 'sonner'
 import { eventCategoryLabels } from '../event.utils'
 import { EventActions } from './EventActions'
 import { EventMap } from './EventMap'
+import { EventContact } from './EventContact'
 
 interface Props {
   initialEvent: IEvent
 }
 
 export default function EventSinglePage({ initialEvent }: Props) {
-  const { user } = useUser()
+  const { user, isAuth } = useUser()
 
   const { slug } = useParams<{ slug: string }>()
   const queryClient = useQueryClient()
@@ -214,6 +215,14 @@ export default function EventSinglePage({ initialEvent }: Props) {
                 'Записаться'
               )}
             </Button>
+
+            {isAuth && (
+              <EventContact
+                eventId={event.id}
+                creatorId={event.creatorId}
+                isParticipant={isParticipant}
+              />
+            )}
           </div>
 
           {event.latitude && event.longitude ? (

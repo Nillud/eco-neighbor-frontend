@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { SERVER_URL } from '@/config/api.config'
 import Image from 'next/image'
 
 export function ChatList({ chats, selectedId, onSelect, isLoading }: any) {
@@ -21,16 +22,25 @@ export function ChatList({ chats, selectedId, onSelect, isLoading }: any) {
         >
           <div className="relative shrink-0">
             <Image
-              src={chat.partner?.avatarUrl || '/default-avatar.png'}
+              src={
+                chat.type === 'EVENT'
+                  ? `${SERVER_URL}${chat.metadata.eventImage}` ||
+                    '/default-avatar.png'
+                  : chat.partner?.avatarUrl.startsWith('http')
+                    ? chat.partner?.avatarUrl
+                    : `${SERVER_URL}${chat.partner?.avatarUrl}` ||
+                      '/default-avatar.png'
+              }
               className="h-12 w-12 rounded-full border border-slate-100 object-cover"
               width={48}
               height={48}
               alt=""
+              unoptimized
             />
             {chat.type === 'EVENT' && (
-              <div className="absolute -right-1 -bottom-1 rounded-full border-2 border-white bg-blue-500 p-1 text-white">
-                <div className="px-0.5 text-[8px] font-bold uppercase">
-                  Event
+              <div className="absolute -right-2 -bottom-1 rounded-full border-2 border-white bg-blue-500 p-1 text-white">
+                <div className="px-0.5 text-[6px] font-bold uppercase">
+                  Мероприятие
                 </div>
               </div>
             )}

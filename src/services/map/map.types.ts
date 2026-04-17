@@ -1,5 +1,6 @@
 export interface IWasteMapPoint {
   waste: {
+    wasteId: string
     name: string
     slug: string
   }
@@ -14,4 +15,16 @@ export interface IMapPoint {
   description?: string
   type: 'CONTAINER' | 'POINT'
   wasteMapPoints: IWasteMapPoint[]
+}
+
+export interface ICreateMapPointDto {
+  title: string
+  address: string
+  latitude: number
+  longitude: number
+  description?: string
+  isVerified?: boolean
+  type?: 'CONTAINER' | 'POINT'
+
+  wasteIds: string[]
 }

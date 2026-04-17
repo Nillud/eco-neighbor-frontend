@@ -3,6 +3,8 @@
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { SERVER_URL } from '@/config/api.config'
+import { PAGES } from '@/config/pages.config'
 import { useSocket } from '@/hooks/useSocket'
 import { messagesService } from '@/services/messages/messages.service'
 import { IChatItem, IMessage } from '@/services/messages/messages.types'
@@ -10,7 +12,8 @@ import { useUser } from '@/store/user.store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ChevronLeft, Send } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 export function ChatWindow({
   chat,
@@ -32,7 +35,8 @@ export function ChatWindow({
       messagesService.getHistory({
         adId: chat.metadata.adId,
         eventId: chat.metadata.eventId,
-        participantId: chat.partner.id
+        // Добавляем проверку: в ивентах нам не нужен id партнера для фильтрации
+        participantId: chat.type === 'AD' ? chat.partner?.id : undefined
       })
   })
 
@@ -43,7 +47,8 @@ export function ChatWindow({
         text,
         adId: chat.metadata.adId,
         eventId: chat.metadata.eventId,
-        receiverId: chat.partner.id
+        // В ивентах receiverId может быть пустым (сообщение всем)
+        receiverId: chat.type === 'AD' ? chat.partner?.id : undefined
       }),
     onSuccess: newMsg => {
       setText('')
@@ -82,6 +87,16 @@ export function ChatWindow({
     })
   }, [messages])
 
+  const link = useMemo(
+    () =>
+      chat.metadata.adSlug
+        ? PAGES.DYNAMIC.AD(chat.metadata.adSlug)
+        : chat.metadata.eventSlug
+          ? PAGES.DYNAMIC.EVENT(chat.metadata.eventSlug)
+          : '',
+    [chat.metadata]
+  )
+
   return (
     <div className="flex h-full flex-col bg-white">
       <div className="flex items-center gap-4 border-b p-4">
@@ -95,16 +110,30 @@ export function ChatWindow({
         </Button>
 
         <Image
-          src={chat.partner.avatarUrl || '/images/default-avatar.png'}
+          src={
+            chat.type === 'EVENT'
+              ? `${SERVER_URL}${chat.metadata.eventImage}` ||
+                '/default-avatar.png'
+              : chat.partner?.avatarUrl.startsWith('http')
+                ? chat.partner?.avatarUrl
+                : `${SERVER_URL}${chat.partner?.avatarUrl}` ||
+                  '/default-avatar.png'
+          }
           className="h-10 w-10 rounded-full object-cover"
           width={40}
           height={40}
           alt=""
+          unoptimized
         />
 
         <div className="overflow-hidden">
           <h3 className="truncate font-bold">{chat.partner.name}</h3>
-          <p className="text-primary-brand truncate text-xs">{chat.title}</p>
+          <Link
+            href={link}
+            className="text-primary-brand truncate text-sm hover:underline"
+          >
+            {chat.title}
+          </Link>
         </div>
       </div>
 

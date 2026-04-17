@@ -29,7 +29,10 @@ export function AdContact({ adId, authorId, authorName }: AdContactProps) {
         receiverId: authorId
       }),
     onSuccess: () => {
-      router.push('/messages')
+      const sendTimeout = setTimeout(() => {
+        router.push('/messages')
+        clearTimeout(sendTimeout)
+      }, 0)
     }
   })
 
@@ -50,8 +53,8 @@ export function AdContact({ adId, authorId, authorName }: AdContactProps) {
           className="bg-primary-brand w-full gap-2 hover:bg-emerald-600"
         >
           <MessageCircle size={20} />
-          Написать 
-          <span className='hidden lg:block'>{authorName}</span>
+          Написать
+          <span className="hidden lg:block">{authorName}</span>
         </Button>
       ) : (
         <form

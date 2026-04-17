@@ -9,6 +9,7 @@ import {
   Calendar,
   Loader2,
   Lock,
+  MapPin,
   ShieldCheck,
   Trophy,
   User
@@ -21,6 +22,7 @@ import { MyAds } from './parts/MyAds'
 import { MyEvents } from './parts/MyEvents'
 import { ProfileInfo } from './parts/ProfileInfo'
 import { TabButton } from './ui/TabButton'
+import { AdminPointsModeration } from './parts/AdminPointsModeration'
 
 export default function ProfilePage() {
   const { data: profile, isLoading } = useQuery({
@@ -199,9 +201,21 @@ export default function ProfilePage() {
           {profile.role === 'ADMIN' && (
             <TabsContent
               value="admin"
-              className="mt-0 focus-visible:outline-none"
+              className="space-y-10 focus-visible:outline-none"
             >
-              <AdminStats />
+              <div>
+                <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-red-600">
+                  <ShieldCheck size={20} /> Статистика системы
+                </h3>
+                <AdminStats />
+              </div>
+
+              <div className="border-t border-slate-100 pt-10">
+                <h3 className="mb-4 flex items-center gap-2 text-lg font-bold">
+                  <MapPin size={20} /> Модерация точек сбора
+                </h3>
+                <AdminPointsModeration />
+              </div>
             </TabsContent>
           )}
         </div>

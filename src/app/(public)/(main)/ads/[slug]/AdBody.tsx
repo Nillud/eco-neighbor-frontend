@@ -40,13 +40,6 @@ export function AdBody({ ad }: Props) {
             />
           ) : (
             <div className="flex h-full flex-col items-center justify-center text-slate-400">
-              <Image
-                src="/no-photo.svg"
-                alt="No photo"
-                width={100}
-                height={100}
-                className="opacity-20"
-              />
               <p className="mt-2">Фотография отсутствует</p>
             </div>
           )}

@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
+import { AddPointModal } from './AddPointModal'
 import { Filters } from './Filters'
 
 export function Home() {
@@ -25,10 +26,20 @@ export function Home() {
   const [isCollectModalOpen, setIsCollectModalOpen] = useState(false)
   const [selectedPointId, setSelectedPointId] = useState<string | null>(null)
 
+  const [isAddPointModalOpen, setIsAddPointModalOpen] = useState(false)
+
   const toggleFilter = (slug: string) => {
     setSelectedFilters(prev =>
       prev.includes(slug) ? prev.filter(s => s !== slug) : [...prev, slug]
     )
+  }
+
+  const handleAddPointClick = () => {
+    if (!isAuth) {
+      router.push(PAGES.PUBLIC.LOGIN)
+      return
+    }
+    router.push('/add-point') // Или твой путь
   }
 
   useEffect(() => {
@@ -67,12 +78,14 @@ export function Home() {
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-        <h1 className='hidden'>Эко-сосед</h1>
+        <h1 className="hidden">Эко-сосед</h1>
         <Heading
           title="Эко-карта"
           description="Находите точки сбора вторсырья и актуальные проблемы соседей"
         />
-        <ActionButton>+ Добавить точку</ActionButton>
+        <ActionButton onClick={handleAddPointClick}>
+          + Добавить точку
+        </ActionButton>
       </div>
 
       <div className="flex flex-col gap-4 lg:grid lg:h-175 lg:grid-cols-4">
@@ -102,6 +115,11 @@ export function Home() {
         onClose={() => setIsCollectModalOpen(false)}
         point={currentPoint}
         onSuccess={handleFinalSuccess}
+      />
+
+      <AddPointModal
+        isOpen={isAddPointModalOpen}
+        onClose={() => setIsAddPointModalOpen(false)}
       />
     </section>
   )

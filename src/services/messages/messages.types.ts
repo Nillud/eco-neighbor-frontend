@@ -25,6 +25,9 @@ export interface IChatItem {
   }
   metadata: {
     adId?: string
+    adSlug?: string
     eventId?: string
+    eventSlug?: string
+    eventImage?: string
   }
 }
