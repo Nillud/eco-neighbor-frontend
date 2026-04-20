@@ -3,6 +3,7 @@ export interface IWasteMapPoint {
     wasteId: string
     name: string
     slug: string
+    id: string
   }
 }
 

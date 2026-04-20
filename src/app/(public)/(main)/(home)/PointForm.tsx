@@ -1,7 +1,10 @@
+/* eslint-disable react-hooks/incompatible-library */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
+import { Heading } from '@/components/shared/heading/Heading'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -14,8 +17,9 @@ import {
 import { useDebounce } from '@/hooks/useDebounce'
 import { mapService } from '@/services/map/map.service'
 import { ICreateMapPointDto, IMapPoint } from '@/services/map/map.types'
+import { wasteService } from '@/services/waste/waste.service'
 import { Map, Placemark, YMaps } from '@pbe/react-yandex-maps'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { ChevronLeft, Loader2, MapPin } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -32,6 +36,11 @@ export function PointForm({ initialData }: PointFormProps) {
   const router = useRouter()
   const ymapsRef = useRef<any>(null)
 
+  const { data: wastes, isLoading: isWastesLoading } = useQuery({
+    queryKey: ['all wastes'],
+    queryFn: () => wasteService.getAll()
+  })
+
   const { register, handleSubmit, control, setValue, watch } =
     useForm<ICreateMapPointDto>({
       defaultValues: {
@@ -40,11 +49,12 @@ export function PointForm({ initialData }: PointFormProps) {
         latitude: initialData?.latitude || 54.698853,
         longitude: initialData?.longitude || 55.8503,
         type: initialData?.type || 'CONTAINER',
-        wasteIds: initialData?.wasteMapPoints?.map(w => w.waste.wasteId) || []
+        wasteIds: initialData?.wasteMapPoints?.map(w => w.waste.id) || []
       }
     })
 
   const address = watch('address')
+  const wasteIds = watch('wasteIds') || []
   const debouncedAddress = useDebounce(address, 1000)
   const coords = [watch('latitude'), watch('longitude')]
 
@@ -88,16 +98,14 @@ export function PointForm({ initialData }: PointFormProps) {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: ICreateMapPointDto) =>
       isEditMode
-        ? mapService.update(initialData.id, data) // Предполагаем наличие метода update в сервисе
+        ? mapService.update(initialData.id, data)
         : mapService.create(data),
     onSuccess: () => {
-      toast.success(
-        isEditMode ? 'Точка обновлена' : 'Точка предложена и ушла на модерацию'
-      )
+      toast.success(isEditMode ? 'Точка обновлена' : 'Точка отправлена на модерацию')
       router.push('/')
       router.refresh()
     },
-    onError: () => toast.error('Ошибка при сохранении данных')
+    onError: () => toast.error('Ошибка при сохранении')
   })
 
   return (
@@ -109,13 +117,16 @@ export function PointForm({ initialData }: PointFormProps) {
         <ChevronLeft size={16} /> Назад к карте
       </Link>
 
-      <h1 className="mb-8 flex items-center gap-3 text-3xl font-bold">
-        <MapPin
-          className="text-primary-brand"
-          size={32}
-        />
-        {isEditMode ? 'Редактировать точку' : 'Предложить новую точку'}
-      </h1>
+      <Heading title={
+        <div className='flex gap-1'>
+          <MapPin
+            className="text-primary-brand"
+            size={32}
+          />
+          {isEditMode ? 'Редактировать точку' : 'Предложить новую точку'}
+        </div>
+      }
+      />
 
       <form
         onSubmit={handleSubmit(data => mutate(data))}
@@ -150,6 +161,41 @@ export function PointForm({ initialData }: PointFormProps) {
                 </Select>
               )}
             />
+          </div>
+
+          <div className="space-y-3">
+            <Label className="text-base">Что принимают на этой точке?</Label>
+            {isWastesLoading ? (
+              <Loader2 className="animate-spin text-slate-400" />
+            ) : (
+              <div className="grid grid-cols-2 gap-4 rounded-xl border border-slate-200 p-4 shadow-sm">
+                {wastes?.map(waste => (
+                  <div key={waste.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={waste.id}
+                      checked={wasteIds.includes(waste.id)}
+                      onCheckedChange={(checked) => {
+                        const currentIds = [...wasteIds]
+                        if (checked) {
+                          setValue('wasteIds', [...currentIds, waste.id])
+                        } else {
+                          setValue('wasteIds', currentIds.filter(id => id !== waste.id))
+                        }
+                      }}
+                    />
+                    <label
+                      htmlFor={waste.id}
+                      className="text-sm font-medium leading-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      {waste.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            )}
+            {wasteIds.length === 0 && (
+              <p className="text-xs text-red-500 italic">Выберите хотя бы один вид отходов</p>
+            )}
           </div>
 
           <div className="space-y-2">

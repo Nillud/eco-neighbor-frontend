@@ -8,7 +8,7 @@ class WasteService {
 
   async getAll(): Promise<Option[]> {
     const result = await $api.get<IWaste[]>(`${this.WASTE}`)
-    return result.data.map(el => ({ label: el.name, value: el.slug }))
+    return result.data.map(el => ({ label: el.name, value: el.slug, id: el.id }))
   }
 }
 

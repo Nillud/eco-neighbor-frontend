@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { mapService } from '@/services/map/map.service'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -10,6 +11,8 @@ export function AdminPointsModeration() {
     queryKey: ['pending-points'],
     queryFn: () => mapService.getPendingPoints()
   })
+
+  console.log(pendingPoints)
 
   const { mutate: verify } = useMutation({
     mutationFn: (id: string) => mapService.verify(id),
@@ -40,6 +43,7 @@ export function AdminPointsModeration() {
             <h4 className="font-bold">{point.title}</h4>
             <p className="text-sm text-slate-500">{point.address}</p>
             <p className="text-xs">Автор: {point.author?.name}</p>
+            <div className='flex gap-1 mt-1'>{point.wasteMapPoints.map((wmp: any) => <Badge className='bg-primary-brand' key={wmp.id}>{wmp.waste.name}</Badge>)}</div>
           </div>
           <div className="flex gap-2">
             <Button
